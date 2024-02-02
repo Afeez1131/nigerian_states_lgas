@@ -61,8 +61,10 @@ Explain any configuration options or settings that users might need to customize
 
 ```python
 # Example Django project settings.py
-YOUR_APP_SETTING_1 = 'value1'
-YOUR_APP_SETTING_2 = 'value2'
+"""
+Only states and Local government in the selected geo political zones would be in the choices.
+"""
+DEFAULT_GEO_POLITICAL_ZONES = ['North West']
 ```
 
 ## Contributing
@@ -78,6 +80,6 @@ Contributions are welcome! Please follow these steps to contribute:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
 
-Remember to replace placeholders like `your-app`, `your-username`, and others with your actual app and GitHub details. Additionally, customize sections and content based on the specific features and details of your third-party Django app.
+
+

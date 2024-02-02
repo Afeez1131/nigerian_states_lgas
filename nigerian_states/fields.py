@@ -1,6 +1,7 @@
 from django import forms
 from nigerian_states.models import State, LocalGovernment
 from django.db import connection
+from django.conf import settings
     
     
 class StateFormField(forms.ChoiceField):
@@ -26,6 +27,8 @@ class StateFormField(forms.ChoiceField):
             South West - Ekiti, Lagos, Osun, Ondo, Ogun, Oyo.
             
     kwargs `zones`: list of the political zones in Nigeria you want the states choices to be from.
+    
+    #todo: Add default `state` and `lga`, the default would be preselected on the fields.
     """
     def get_state_choices(self):
         choices = []
@@ -33,6 +36,9 @@ class StateFormField(forms.ChoiceField):
         if 'nigerian_states_state' in table_names:
             qs = State.objects.all()
             geo_zones = self.zones
+            if getattr(settings, 'DEFAULT_GEO_POLITICAL_ZONES', []):
+                geo_zones = settings.DEFAULT_GEO_POLITICAL_ZONES
+            print('zones: ', geo_zones)
             if geo_zones:
                 qs = qs.filter(zone__in=geo_zones)
             choices = [(state.name, state.name) for state in qs]
@@ -64,6 +70,8 @@ class LocalGovernmentField(forms.ChoiceField):
         if 'nigerian_states_localgovernment' in table_names:
             qs = LocalGovernment.objects.all()
             geo_zones = self.zones
+            if getattr(settings, 'DEFAULT_GEO_POLITICAL_ZONES', []):
+                geo_zones = settings.DEFAULT_GEO_POLITICAL_ZONES
             if geo_zones:
                 qs = qs.filter(state__zone__in=geo_zones)
             choices = [(lga.name, f"{lga.state.name}: {lga.name}") for lga in qs]

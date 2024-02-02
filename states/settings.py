@@ -123,3 +123,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+"""
+Only states and Local government in the selected geo political zones would be in the choices.
+"""
+DEFAULT_GEO_POLITICAL_ZONES = ['North West']
