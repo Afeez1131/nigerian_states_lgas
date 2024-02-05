@@ -125,6 +125,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 """
-Only states and Local government in the selected geo political zones would be in the choices.
+Only states and Local government in the default geo political zones would be in the choices.
+This would override the `zone` passed as a kwargs to the fields.
 """
-DEFAULT_GEO_POLITICAL_ZONES = ['North West']
+DEFAULT_GEO_POLITICAL_ZONES = ['North West', 'South South']

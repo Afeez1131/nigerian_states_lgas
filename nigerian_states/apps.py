@@ -5,4 +5,4 @@ class NigerianStates(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'nigerian_states'
     def ready(self):
-        import nigerian_states.signals
+        pass

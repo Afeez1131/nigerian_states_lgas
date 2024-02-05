@@ -175,3 +175,5 @@ cython_debug/
 testcase_methods.md
 qr_notes.md
 temp.py
+management/
+states.json

@@ -2,9 +2,20 @@ from django.db import models
 from nigerian_states.enums import PoliticalZones
 
 
+class GeoPoliticalZone(models.Model):
+    name = models.CharField(max_length=55, choices=PoliticalZones.choices)
+    
+    def __str__(self):
+        return self.name
+    
+    @property
+    def all_states(self):
+        return self.states.all()
+
 class State(models.Model):
     name = models.CharField(max_length=100, db_index=True)
-    zone = models.CharField(max_length=55, choices=PoliticalZones.choices)
+    capital = models.CharField(max_length=100)
+    zone = models.ForeignKey(GeoPoliticalZone, on_delete=models.CASCADE, related_name='states')
     
     def __str__(self):
         return self.name
@@ -12,6 +23,10 @@ class State(models.Model):
     @property
     def total_lgas(self):
         return self.localgovernment_set.count()
+    
+    @property
+    def lgas(self):
+        return self.localgovernment_set.all()
 
 
 class LocalGovernment(models.Model):
@@ -21,6 +36,3 @@ class LocalGovernment(models.Model):
     def __str__(self):
         return f"{self.state.name}: {self.name}"
     
-    
-class AppSetup(models.Model):
-    is_data_loaded = models.BooleanField(default=False)
