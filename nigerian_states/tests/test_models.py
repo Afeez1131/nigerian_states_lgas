@@ -1,37 +1,7 @@
 from nigerian_states.models import GeoPoliticalZone, State, LocalGovernment
 from django.test import TestCase, override_settings
 from django.conf import settings
-from django.core.management import call_command
-import random
-
-
-EXPECTED_STATE_COUNT = 37
-FIRST_STATE = "Abia"
-FIRST_LG = "Aba North"
-LAST_LG = "Municipal Area Council"
-LAST_STATE = "Federal Capital Territory"
-TOTAL_ZONES = 6
-TOTAL_STATES = 37
-TOTAL_LGAS = 774
-FIRST_THREE_STATE = ['Abia', 'Adamawa', 'Akwa Ibom']
-LAST_THREE_STATE = ['Federal Capital Territory', 'Zamfara', 'Yobe']
-
-def get_random_zone():
-    return random.choice(GeoPoliticalZone.objects.all())
-    
-    
-def get_random_state():
-    return random.choice(State.objects.all())
-
-def get_random_lga():
-    return random.choice(LocalGovernment.objects.all())
-
-def load_fixtures():
-    """
-    Helper function to load fixtures data in the needed test function
-    """
-    return call_command('loaddata', 'nigerian_states/fixtures/fixtures.json', verbosity=0)
-    
+from .defaults import FIRST_LG, FIRST_STATE, FIRST_THREE_STATE, LAST_LG, LAST_STATE, LAST_THREE_STATE, load_fixtures, get_random_lga, get_random_state, get_random_zone, TOTAL_ZONES, TOTAL_STATES, TOTAL_LGAS    
 
 class TestGeoPoliticalZone(TestCase):
     """
@@ -40,15 +10,6 @@ class TestGeoPoliticalZone(TestCase):
     def setUp(self):
         load_fixtures()
 
-
-
-    # def test_zones_model_without_data(self):
-    #     """
-    #     Test the GeoPoliticalZone model without data in it.
-    #     """
-    #     self.assertFalse(GeoPoliticalZone.objects.exists())
-    #     self.assertEqual(GeoPoliticalZone.objects.count(), 0)
-        
     def test_zone_string_representation(self):
         """
         Test the string representation of GeoPoliticalZone model
@@ -118,15 +79,6 @@ class TestStateModel(TestCase):
     """
     def setUp(self):
         load_fixtures()
-
-            
-    
-    # def test_state_before_loading_data(self):
-    #     """
-    #     Test state model before loading data on it.
-    #     """
-    #     self.assertFalse(State.objects.exists())
-    #     self.assertEqual(State.objects.count(), 0)
     
     def test_state_string_representation(self):
         state = State.objects.get(name='Lagos')
@@ -212,15 +164,6 @@ class TestLocalGovernmentModel(TestCase):
     """
     def setUp(self):
         load_fixtures()
-
-            
-    
-    # def test_state_before_loading_data(self):
-    #     """
-    #     Test state model before loading data on it.
-    #     """
-    #     self.assertFalse(State.objects.exists())
-    #     self.assertEqual(State.objects.count(), 0)
     
     def test_state_string_representation(self):
         lg = LocalGovernment.objects.get(name='Aba South')

@@ -9,7 +9,7 @@ class GeoPoliticalZoneAdmin(admin.ModelAdmin):
 
 @admin.register(State)
 class StateAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['name', 'capital', 'zone']
 
 
 @admin.register(LocalGovernment)
