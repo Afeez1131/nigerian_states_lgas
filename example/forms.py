@@ -1,7 +1,7 @@
 from django import forms
 from example.models import About
 # from src.forms import StateForm, LocalGovernmentForm
-from nigerian_states.fields import GeoPoliticalZoneField, StateFormField, LocalGovernmentField
+from nigerian_states.fields import GeoPoliticalZoneField, StateField, LocalGovernmentField
 from nigerian_states.enums import PoliticalZones
 
 
@@ -12,7 +12,7 @@ class AboutForm(forms.ModelForm):
             help_text='Select a zone from the dropdown',
             widget=forms.Select(attrs={'class': 'select form-select select2'}),
     )
-    state = StateFormField(
+    state = StateField(
             label='Name of States',
             empty_label = 'Select a State',
             help_text='Select a state from the dropdown',

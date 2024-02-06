@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import connection
     
 
-DEFAULT_POLITICAL_ZONES = getattr(settings, 'DEFAULT_GEO_POLITICAL_ZONES', [])
+
 
 
 class BaseField(forms.ChoiceField):
@@ -22,9 +22,12 @@ class BaseField(forms.ChoiceField):
         return super().__init__(*args, **kwargs)
     
     def geo_political_zones(self):
+        DEFAULT_POLITICAL_ZONES = getattr(settings, 'DEFAULT_GEO_POLITICAL_ZONES', [])
         geo_zones = DEFAULT_POLITICAL_ZONES if not self.zones else self.zones
         return GeoPoliticalZone.objects.filter(name__in=geo_zones)
     
+    def get_choices(self):
+        return [('', '')]
     
 
 class GeoPoliticalZoneField(BaseField):
@@ -54,14 +57,14 @@ class GeoPoliticalZoneField(BaseField):
         return choices
 
     
-class StateFormField(BaseField):
+class StateField(BaseField):
     """
     A custom form field for selecting a state in Nigeria.This field extends the ChoiceField.
     Reason for using ChoiceField is `State` and `Town` are to be treated as `CharField`.
 
     Example usage:
     ```
-    state = state = StateFormField(
+    state = state = StateField(
             label='Name of States',
             empty_label = 'Select a State',
             help_text='Select a state from the dropdown',
