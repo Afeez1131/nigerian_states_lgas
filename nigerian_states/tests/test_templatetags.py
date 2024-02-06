@@ -4,7 +4,8 @@ from nigerian_states.models import GeoPoliticalZone, State
 from nigerian_states.utils import queryset_to_list
 from .defaults import get_state, load_fixtures, get_random_state_in_zone
 from django.template import Context, Template
-from nigerian_states.templatetags.default_tags import get_capital, get_lgas_in_state, get_states_in_zone, get_zone, get_zone_info, is_lga_in_state, is_state_in_zone
+from nigerian_states.templatetags.default_tags import default_zone, get_capital, get_lgas_in_state, get_states_in_zone, get_zone, get_zone_info, is_lga_in_state, is_state_in_zone
+from django.conf import settings
 
 class TestTemplateTags(TestCase):
     """
@@ -130,3 +131,9 @@ class TestTemplateTags(TestCase):
         self.assertEqual(test_data, data)
         self.assertIsInstance(test_data["states"], list)
         self.assertIsInstance(test_data["lgas"], list)
+        
+    def test_tag_default_zone(self):
+        """
+        Test that the `default zone` tag returns the default set in the settings
+        """
+        self.assertEqual(default_zone(), getattr(settings, 'DEFAULT_GEO_POLITICAL_ZONES'))
