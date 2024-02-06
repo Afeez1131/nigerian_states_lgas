@@ -1,6 +1,8 @@
 from nigerian_states.models import GeoPoliticalZone, State, LocalGovernment
 from django.test import TestCase, override_settings
 from django.conf import settings
+
+from nigerian_states.utils import queryset_to_list
 from .defaults import FIRST_LG, FIRST_STATE, FIRST_THREE_STATE, LAST_LG, LAST_STATE, LAST_THREE_STATE, load_fixtures, get_random_lga, get_random_state, get_random_zone, TOTAL_ZONES, TOTAL_STATES, TOTAL_LGAS    
 
 class TestGeoPoliticalZone(TestCase):
@@ -20,10 +22,31 @@ class TestGeoPoliticalZone(TestCase):
     
     def test_zone_has_all_states_property(self):
         """
-        Test that GeoPoliticalZone has the `all_states` property.
+        Test that GeoPoliticalZone has the `all_states` property which returns name of all state under the GeoPoliticalZone
         """
         zone = get_random_zone()
         self.assertTrue(hasattr(zone, 'all_states'))
+        
+    def test_zone_has_total_states_property(self):
+        """
+        Test that GeoPoliticalZone has the `total_states` property which returns name of all states under the zone.
+        """
+        zone = get_random_zone()
+        self.assertTrue(hasattr(zone, 'total_states'))
+        
+    def test_zone_has_all_lgas_property(self):
+        """
+        Test that the GeoPoliticalZone instance has `all_lgas` property which returns list of names of all lgas under the GeoPoliticalZone.
+        """
+        zone = get_random_zone()
+        self.assertTrue(hasattr(zone, 'all_lgas'))
+        
+    def test_zone_has_total_lgas_property(self):
+        """
+        Test that the GeoPoliticalZone instance has `total_lgas` property which returns count of lgas under the GeoPoliticalZone.
+        """
+        zone = get_random_zone()
+        self.assertTrue(hasattr(zone, 'total_lgas'))
         
     def test_total_number_of_zones(self):
         """
@@ -37,8 +60,8 @@ class TestGeoPoliticalZone(TestCase):
         Test that the `all_states` property returns all the state in a GeoPoliticalZone
         """
         zone = get_random_zone()
-        zone_state = zone.all_states.values_list('id', flat=True)
-        s_state = State.objects.filter(zone=zone).values_list('id', flat=True)
+        zone_state = queryset_to_list(zone.all_states, 'id')
+        s_state = queryset_to_list(State.objects.filter(zone=zone), 'id')
         self.assertEqual(len(zone_state), len(s_state))
         self.assertEqual(len(set(zone_state).difference(set(s_state))), 0)
         self.assertEqual(zone.all_states.count(), State.objects.filter(zone=zone).count())
@@ -59,7 +82,7 @@ class TestGeoPoliticalZone(TestCase):
         """
         zone = get_random_zone()
         lgas = LocalGovernment.objects.filter(state__zone=zone)
-        all_state_ids = zone.all_states.values_list('id', flat=True)
+        all_state_ids = queryset_to_list(zone.all_states, 'id')
         all_lgas = LocalGovernment.objects.filter(state__in=all_state_ids)
         self.assertEqual(lgas.count(), all_lgas.count())
         self.assertEqual(len(set(lgas).difference(set(all_lgas))), 0)
@@ -129,16 +152,16 @@ class TestStateModel(TestCase):
         self.assertEqual(first_state.name, FIRST_STATE)
         
     def test_first_three_states_names(self):
-        state = State.objects.values_list('name', flat=True)[:3]
-        self.assertEqual(list(state), FIRST_THREE_STATE)
+        state = queryset_to_list(State.objects.all(), 'name')[:3]
+        self.assertEqual(state, FIRST_THREE_STATE)
         
     def test_last_state_name(self):
         last_state = State.objects.get(id=37)
         self.assertEqual(last_state.name, LAST_STATE)
         
     def test_last_three_states_names(self):
-        last_three = State.objects.order_by('-id').values_list('name', flat=True)[:3]
-        self.assertEqual(list(last_three), LAST_THREE_STATE)
+        last_three = queryset_to_list(State.objects.order_by('-id'), 'name')[:3]
+        self.assertEqual(last_three, LAST_THREE_STATE)
         
     def test_fetching_state_with_invalid_name(self):
         """

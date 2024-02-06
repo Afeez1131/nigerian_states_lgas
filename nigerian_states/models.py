@@ -11,6 +11,18 @@ class GeoPoliticalZone(models.Model):
     @property
     def all_states(self):
         return self.states.all()
+    
+    @property
+    def total_states(self):
+        return self.all_states.count()
+    
+    @property
+    def all_lgas(self):
+        return LocalGovernment.objects.filter(state__in=self.all_states)
+    
+    @property
+    def total_lgas(self):
+        return self.all_lgas.count()
 
 class State(models.Model):
     name = models.CharField(max_length=100, db_index=True)
