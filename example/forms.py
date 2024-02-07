@@ -16,12 +16,10 @@ class AboutForm(forms.ModelForm):
             label='Name of States',
             empty_label = 'Select a State',
             help_text='Select a state from the dropdown',
-            zones=[PoliticalZones.NORTH_CENTRAL, PoliticalZones.NORTH_EAST],
             widget=forms.Select(attrs={'class': 'select form-select select2', 'required': 'required'}),
     )
     lga = LocalGovernmentField(label='Local Governments',
                                 help_text='Select a LGA from the dropdown', 
-                                zones=[PoliticalZones.NORTH_CENTRAL, PoliticalZones.NORTH_EAST],
                                 widget=forms.Select(attrs={'class': 'select form-select select2', 'required': 'required'}))
     
     class Meta:
