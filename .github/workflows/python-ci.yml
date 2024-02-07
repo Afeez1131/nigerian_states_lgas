@@ -36,7 +36,7 @@ jobs:
 
     - name: Notify on success
       if: ${{ failure() == false }}
-      uses: actions/github-script@v4
+      uses: actions/github-script@v5
       with:
         github-token: ${{ secrets.NIGERIAN_STATES_GITHUB_TOKEN }}
         script: |
@@ -49,7 +49,7 @@ jobs:
 
     - name: Notify on failure
       if: ${{ failure() }}
-      uses: actions/github-script@v4
+      uses: actions/github-script@v5
       with:
         github-token: ${{ secrets.NIGERIAN_STATES_GITHUB_TOKEN }}
         script: |
