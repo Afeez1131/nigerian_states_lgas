@@ -284,7 +284,7 @@ class LocalGovernmentFieldTestCases(TestCase):
         self.assertIsNotNone(field.zones)
         self.assertEqual(field.zones, zone_names)
         self.assertEqual(len(field.get_zones()), len(zone_names))
-        self.assertEqual(len(field.choices), lgs_in_zone.count() + 3)
+        self.assertEqual(len(field.choices), lgs_in_zone.count() + 1)
         self.assertEqual(field.choices[0], ("", "Select a LG"))
         with self.assertRaises(ValidationError):
             field.clean("Invalid LG")
