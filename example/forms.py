@@ -7,7 +7,6 @@ from nigerian_states.fields import (
     StateField,
     LocalGovernmentField,
 )
-from nigerian_states.enums import PoliticalZones
 
 
 class AboutForm(forms.ModelForm):

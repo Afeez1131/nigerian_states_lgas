@@ -3,7 +3,6 @@ from django.test import TestCase
 from nigerian_states.models import GeoPoliticalZone, State
 from nigerian_states.utils import queryset_to_list
 from .defaults import get_state, load_fixtures, get_random_state_in_zone
-from django.template import Context, Template
 from nigerian_states.templatetags.default_tags import (
     default_zone,
     get_capital,
