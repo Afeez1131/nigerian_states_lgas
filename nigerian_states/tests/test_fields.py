@@ -245,7 +245,7 @@ class LocalGovernmentFieldTestCases(TestCase):
         field = LocalGovernmentField()
         self.assertIsNone(field.empty_label)
         self.assertEqual(field.zones, [])
-        self.assertListEqual([("", "Select a LGs")], field.choices)
+        self.assertListEqual([("", "Select a LG")], field.choices)
         self.assertEqual(len(field.choices), 1)
 
     def test_local_government_field_with_kwargs_and_data(self):
