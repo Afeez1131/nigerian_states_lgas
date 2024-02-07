@@ -2,73 +2,55 @@ name: Django CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.10']
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install black pytest pytest-cov
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Run Black
-        run: black .
+    - name: Run Black code formatter
+      run: black .
 
-      - name: Run tests
-        run: pytest
+    - name: Run tests
+      run: pytest
 
-  notify:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check build status
-        id: check_status
-        run: |
-          if [ "${{ needs.build.result }}" == "success" ]; then
-            echo "::set-output name=status::success"
-          else
-            echo "::set-output name=status::failure"
-          fi
-      
-      - name: Notify on success
-        if: steps.check_status.outputs.status == 'success'
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const message = `The build for branch ${{ github.ref }} was successful.`
-            const recipients = ['@afeez1131']
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `${message}\n${recipients.join(' ')}`
-            })
-      
-      - name: Create issue on failure
-        if: steps.check_status.outputs.status == 'failure'
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const title = `Build failed for branch ${{ github.ref }}`
-            const body = `The build for branch ${{ github.ref }} failed. Please check the logs and fix the issue.`
-            github.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: title,
-              body: body,
-              labels: ['bug']
-            })
+    - name: Notify on success
+      if: ${{ failure() == false }}
+      uses: actions/github-script@v4
+      with:
+        github-token: ${{ secrets.NIGERIAN_STATES_GITHUB_TOKEN }}
+        script: |
+          github.repos.createCommitComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            commit_sha: context.sha,
+            body: 'Tests passed successfully. CI/CD build is successful.'
+          })
+
+    - name: Notify on failure
+      if: ${{ failure() }}
+      uses: actions/github-script@v4
+      with:
+        github-token: ${{ secrets.NIGERIAN_STATES_GITHUB_TOKEN }}
+        script: |
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: 'CI/CD Build Failed',
+            body: 'The CI/CD build failed. Please check the build logs for more details.'
+          })
