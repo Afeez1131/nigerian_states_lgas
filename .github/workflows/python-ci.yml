@@ -44,7 +44,7 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             commit_sha: context.sha,
-            body: 'Tests passed successfully. CI/CD build is successful.'
+            body: 'All Tests passed successfully. CI/CD build is successful.'
           })
 
     - name: Notify on failure
