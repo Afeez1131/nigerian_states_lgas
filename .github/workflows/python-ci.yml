@@ -56,7 +56,7 @@ jobs:
       with:
         github-token: ${{ secrets.NIGERIAN_STATES_GITHUB_TOKEN }}
         script: |
-          github.issues.create({
+          github.rest.issues.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
             title: 'CI/CD Build Failed',
