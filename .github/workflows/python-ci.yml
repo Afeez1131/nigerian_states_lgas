@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20' # Specify the desired Node.js version here
+        node-version: '16' # Specify the desired Node.js version here
 
     - name: Set up Python
       uses: actions/setup-python@v2
