@@ -53,11 +53,9 @@ jobs:
       with:
         github-token: ${{ secrets.NIGERIAN_STATES_GITHUB_TOKEN }}
         script: |
-          const buildError = github.context.payload.workflow_run.jobs.filter(job => job.name === 'build')[0].steps.filter(step => step.conclusion === 'failure')[0].name;
-          const errorMessage = `The CI/CD build failed in step '${buildError}'. Please check the build logs for more details.`;
           github.issues.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
             title: 'CI/CD Build Failed',
-            body: errorMessage
+            body: 'The CI/CD build failed. Please check the build logs for more details.'
           })
