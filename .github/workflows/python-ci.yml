@@ -27,33 +27,7 @@ jobs:
       run: black .
 
     - name: Run tests
-      run: pytest || echo "Tests failed, creating GitHub issue..." && exit 1
-
-    - name: Create GitHub issue on test failure
-      if: failure()
-      uses: actions/github-script@v5
-      with:
-        github-token: ${{ secrets.NIGERIAN_STATES_GITHUB_TOKEN }}
-        script: |
-          const { github } = require('@actions/github');
-
-          const createGitHubIssue = async () => {
-            try {
-              const issueTitle = 'Tests failed in CI';
-              const issueBody = 'One or more tests failed during CI. Please investigate and address the issue.';
-              await github.rest.issues.create({
-                owner: github.context.repo.owner,
-                repo: github.context.repo.repo,
-                title: issueTitle,
-                body: issueBody
-              });
-            } catch (error) {
-              console.error('Error creating GitHub issue:', error);
-              process.exit(1); // Exit with non-zero status code to indicate failure
-            }
-          };
-
-          createGitHubIssue();
+      run: pytest
 
     - name: Push changes
       if: success()
