@@ -26,7 +26,7 @@ class BaseField(forms.ChoiceField):
     def get_zones(self):
         """
         This function would get the correct zones for the field.
-        If there is a kwargs `zones` in the field, it would be given 
+        If there is a kwargs `zones` in the field, it would be given
         the utmost weight. After which comes the settings.DEFAULT_GEO_POLITICAL_ZONES
         if there is none of the above, then it falls back to all the Zones.
 
@@ -35,7 +35,7 @@ class BaseField(forms.ChoiceField):
         """
         if self.zones:
             geo_zones = self.zones
-        elif hasattr(settings, 'DEFAULT_GEO_POLITICAL_ZONES'):
+        elif getattr(settings, "DEFAULT_GEO_POLITICAL_ZONES", []):
             geo_zones = settings.DEFAULT_GEO_POLITICAL_ZONES
         else:
             geo_zones = PoliticalZones.values

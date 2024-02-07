@@ -8,32 +8,81 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='GeoPoliticalZone',
+            name="GeoPoliticalZone",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(choices=[('North Central', 'North Central'), ('North East', 'North East'), ('North West', 'North West'), ('South East', 'South East'), ('South South', 'South South'), ('South West', 'South West')], max_length=55)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        choices=[
+                            ("North Central", "North Central"),
+                            ("North East", "North East"),
+                            ("North West", "North West"),
+                            ("South East", "South East"),
+                            ("South South", "South South"),
+                            ("South West", "South West"),
+                        ],
+                        max_length=55,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='State',
+            name="State",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(db_index=True, max_length=100)),
-                ('capital', models.CharField(max_length=100)),
-                ('zone', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='states', to='nigerian_states.geopoliticalzone')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(db_index=True, max_length=100)),
+                ("capital", models.CharField(max_length=100)),
+                (
+                    "zone",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="states",
+                        to="nigerian_states.geopoliticalzone",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='LocalGovernment',
+            name="LocalGovernment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(db_index=True, max_length=100)),
-                ('state', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='nigerian_states.state')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(db_index=True, max_length=100)),
+                (
+                    "state",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="nigerian_states.state",
+                    ),
+                ),
             ],
         ),
     ]

@@ -1,5 +1,6 @@
 from django.db.models import QuerySet
 
+
 def queryset_to_list(queryset: QuerySet, field_name: str):
     """
     Convert the given QuerySet to a list by extracting values from the specified field.

@@ -11,26 +11,32 @@ LAST_STATE = "Federal Capital Territory"
 TOTAL_ZONES = 6
 TOTAL_STATES = 37
 TOTAL_LGAS = 774
-FIRST_THREE_STATE = ['Abia', 'Adamawa', 'Akwa Ibom']
-LAST_THREE_STATE = ['Federal Capital Territory', 'Zamfara', 'Yobe']
+FIRST_THREE_STATE = ["Abia", "Adamawa", "Akwa Ibom"]
+LAST_THREE_STATE = ["Federal Capital Territory", "Zamfara", "Yobe"]
 LAGOS_LGAS = 20
 OYO_LGAS = 33
 
+
 def get_random_zone():
     return random.choice(GeoPoliticalZone.objects.all())
-    
-    
+
+
 def get_random_state():
     return random.choice(State.objects.all())
 
+
 def get_random_lga():
     return random.choice(LocalGovernment.objects.all())
+
 
 def load_fixtures():
     """
     Helper function to load fixtures data in the needed test function
     """
-    return call_command('loaddata', 'nigerian_states/fixtures/fixtures.json', verbosity=0)
+    return call_command(
+        "loaddata", "nigerian_states/fixtures/fixtures.json", verbosity=0
+    )
+
 
 def get_random_state_in_zone(zone_name):
     zone = GeoPoliticalZone.objects.get(name=zone_name)
@@ -39,4 +45,3 @@ def get_random_state_in_zone(zone_name):
 
 def get_state(name):
     return State.objects.get(name=name)
-

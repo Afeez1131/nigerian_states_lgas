@@ -8,6 +8,7 @@ from nigerian_states.utils import queryset_to_list
 
 register = template.Library()
 
+
 @register.simple_tag
 def get_states_in_zone(zone_name):
     """
@@ -18,7 +19,7 @@ def get_states_in_zone(zone_name):
 
     Returns:
         list: List of state in the Geopolitical zone, otherwise empty list.
-        
+
     Usage: {% get_states_in_zone 'North Central' %}
     """
     zones = PoliticalZones.values
@@ -29,7 +30,7 @@ def get_states_in_zone(zone_name):
     except GeoPoliticalZone.DoesNotExist:
         return []
     # return list(zone.all_states.values_list('name', flat=True))
-    return queryset_to_list(zone.all_states, 'name')
+    return queryset_to_list(zone.all_states, "name")
 
 
 @register.simple_tag
@@ -47,7 +48,7 @@ def get_capital(state_name):
     try:
         state = State.objects.get(name=state_name)
     except State.DoesNotExist:
-        return ''
+        return ""
     return state.capital
 
 
@@ -67,7 +68,8 @@ def get_lgas_in_state(state_name):
         state = State.objects.get(name=state_name)
     except State.DoesNotExist:
         return []
-    return queryset_to_list(state.lgas, 'name')
+    return queryset_to_list(state.lgas, "name")
+
 
 @register.filter
 def is_state_in_zone(zone_name, state_name):
@@ -109,11 +111,11 @@ def is_lga_in_state(state_name, lga_name):
     except ObjectDoesNotExist:
         return False
     return lga in state.lgas
-    
-    
+
+
 @register.filter
 def default_zone():
-    return getattr(settings, 'DEFAULT_GEO_POLITICAL_ZONES', [])
+    return getattr(settings, "DEFAULT_GEO_POLITICAL_ZONES", [])
 
 
 @register.simple_tag
@@ -123,7 +125,7 @@ def get_zone(state):
 
     Args:
         state (State): name of the state
-        
+
     Returns:
         str: geopolitical zone of the state or ''
     Usage: {% get_zone 'Oyo' %}
@@ -131,8 +133,9 @@ def get_zone(state):
     try:
         state = State.objects.get(name=state)
     except State.DoesNotExist:
-        return ''
+        return ""
     return state.zone.name
+
 
 @register.simple_tag
 def get_zone_info(zone_name):
@@ -140,13 +143,17 @@ def get_zone_info(zone_name):
         zone = GeoPoliticalZone.objects.get(name=zone_name)
     except GeoPoliticalZone.DoesNotExist:
         return {}
-    state_ids = list(zone.all_states.values_list('id', flat=True))
-    lgas = list(LocalGovernment.objects.filter(state__in=state_ids).values_list('name', flat=True))
+    state_ids = list(zone.all_states.values_list("id", flat=True))
+    lgas = list(
+        LocalGovernment.objects.filter(state__in=state_ids).values_list(
+            "name", flat=True
+        )
+    )
     output = {
-        'zone': zone.name,
-        'no_of_states': zone.all_states.count(),
-        'states': queryset_to_list(zone.all_states, 'name'),
-        'no_of_lgas': zone.total_lgas,
-        'lgas': lgas
+        "zone": zone.name,
+        "no_of_states": zone.all_states.count(),
+        "states": queryset_to_list(zone.all_states, "name"),
+        "no_of_lgas": zone.total_lgas,
+        "lgas": lgas,
     }
     return output
