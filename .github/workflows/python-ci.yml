@@ -37,7 +37,7 @@ jobs:
         script: |
           const { github } = require('@actions/github');
 
-          const run = async () => {
+          const createGitHubIssue = async () => {
             try {
               const issueTitle = 'Tests failed in CI';
               const issueBody = 'One or more tests failed during CI. Please investigate and address the issue.';
@@ -53,7 +53,7 @@ jobs:
             }
           };
 
-          run();
+          createGitHubIssue();
 
     - name: Push changes
       if: success()
