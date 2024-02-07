@@ -69,7 +69,9 @@ class GeoPoliticalFieldTestCase(TestCase):
         Test the initialization of GeoPoliticalZoneField with data in DB.
         """
         load_fixtures()
-        with override_settings(DEFAULT_GEO_POLITICAL_ZONES=['North West', 'South South']):
+        with override_settings(
+            DEFAULT_GEO_POLITICAL_ZONES=["North West", "South South"]
+        ):
             field = GeoPoliticalZoneField()
             default_zone = sorted(getattr(settings, "DEFAULT_GEO_POLITICAL_ZONES", []))
             default_zone = GeoPoliticalZone.objects.filter(name__in=default_zone)
@@ -84,7 +86,8 @@ class GeoPoliticalFieldTestCase(TestCase):
             self.assertEqual(len(field.get_choices()), 3)
             self.assertListEqual(field.get_choices(), default_choices)
             self.assertEqual(
-                sorted(field.get_zones()), sorted(queryset_to_list(default_zone, "name"))
+                sorted(field.get_zones()),
+                sorted(queryset_to_list(default_zone, "name")),
             )
             a_choice = default_choices[1][0]
             self.assertEqual(field.clean(a_choice), a_choice)
@@ -126,7 +129,7 @@ class GeoPoliticalFieldTestCase(TestCase):
         self.assertEqual(field.clean("South East"), "South East")
         self.assertEqual(len(field.choices), len(zones) + 1)
 
-    @override_settings(DEFAULT_GEO_POLITICAL_ZONES=['North West', 'South South'])
+    @override_settings(DEFAULT_GEO_POLITICAL_ZONES=["North West", "South South"])
     def test_geo_political_zone_default_overriding(self):
         """
         Test that the GeoPoliticalZoneField, zones kwargs override the settings.DEFAULT_GEO_POLITICAL_ZONES
@@ -156,6 +159,7 @@ class StateFieldTestCase(TestCase):
     """
     Test cases for the StateField
     """
+
     def test_state_field_without_data(self):
         """
         Test the Initialization of StateField before loading data to db.
@@ -233,6 +237,7 @@ class LocalGovernmentFieldTestCases(TestCase):
     """
     Test cases for LocalGovernmentField
     """
+
     def test_local_government_field_without_data(self):
         """
         Test for the LocalGovernmentField initialization before loading data to db
