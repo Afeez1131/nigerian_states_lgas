@@ -128,4 +128,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 Only states and Local government in the default geo political zones would be in the choices.
 This would override the `zone` passed as a kwargs to the fields.
 """
-# DEFAULT_GEO_POLITICAL_ZONES = ['North West', 'South South']
+DEFAULT_GEO_POLITICAL_ZONES = ['North West', 'South South']
