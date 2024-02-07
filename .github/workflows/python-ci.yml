@@ -48,7 +48,6 @@ jobs:
         if: steps.check_status.outputs.status == 'success'
         uses: actions/github-script@v4
         with:
-          github-token: ${{secrets.NIGERIAN_STATES_GITHUB_TOKEN}}
           script: |
             const message = `The build for branch ${{ github.ref }} was successful.`
             const recipients = ['@afeez1131']
@@ -63,11 +62,10 @@ jobs:
         if: steps.check_status.outputs.status == 'failure'
         uses: actions/github-script@v4
         with:
-          github-token: ${{secrets.NIGERIAN_STATES_GITHUB_TOKEN}}
           script: |
             const title = `Build failed for branch ${{ github.ref }}`
             const body = `The build for branch ${{ github.ref }} failed. Please check the logs and fix the issue.`
-            github.rest.issues.create({
+            github.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: title,
